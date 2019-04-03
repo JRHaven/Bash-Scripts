@@ -1,0 +1,9 @@
+#!/bin/bash
+while [[ true ]];
+do
+	lsusb
+	echo " "
+	echo "---------------------------------"
+	echo " "
+	sleep 0.5
+done

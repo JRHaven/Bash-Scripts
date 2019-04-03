@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo echo klads > .junk
+sudo rm /media/jeremiah/Shared\ File/$1
+rm .junk

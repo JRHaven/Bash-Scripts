@@ -1,0 +1,3 @@
+#!/bin/bash
+gnome-terminal
+xfwm4 --replace

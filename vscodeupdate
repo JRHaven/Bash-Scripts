@@ -1,0 +1,12 @@
+#!/bin/bash
+clear
+echo "Download Visual Studio Code and put it in ~/Downloads/Debs. (IMPORTANT)"
+echo ""
+echo Press enter when done...
+read junk
+clear
+cd ~/Downloads/Debs
+version=$(ls | grep code)
+sudo gdebi $version
+clear
+printf "Visual Studio Code has been successfully updated to version $version\n"

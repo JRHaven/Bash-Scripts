@@ -1,0 +1,41 @@
+#!/bin/bash
+echo Checking for gdebi.....
+dpkg -l | grep -qw gdebi || sudo apt-get install -yyq gdebi
+echo "gdebi installed!"
+if [[ $1 == "--help" ]]; then
+	clear
+	echo "'''''''''''''''''''''''''''''''''''''''''''''''''''"
+	echo "'''        debkit: A Utility for deb Files!     '''"
+	echo "'''''''''''''''''''''''''''''''''''''''''''''''''''"
+	echo "''' Note: debkit needs gdebi to be installed.   '''"
+	echo "''' If gdebi is not installed, debkit will      '''"
+	echo "''' install it on startup, wether run by main   '''"
+	echo "''' menu or through a script.                   '''"
+	echo "'''''''''''''''''''''''''''''''''''''''''''''''''''"
+	echo "''' debkit is a utility that is for everything  '''"
+	echo "''' deb files! If you download a deb file and   '''"
+	echo "''' need to unpack it, it is possible through   '''"
+	echo "''' debkit. If you need to create a deb file,   '''"
+	echo "''' debkit has a special wizard for it!         '''"
+	echo "'''''''''''''''''''''''''''''''''''''''''''''''''''"
+	echo "''' Arguments:                                  '''"
+	echo "'''                                             '''"
+	echo "''' debkit can be run alone to have a main menu '''"
+	echo "''' interface friendly for getting things done  '''"
+	echo "''' without a special argument. However, if     '''"
+	echo "''' debkit needs to be run from a script, it    '''"
+	echo "''' is possible through debkit's arguments.     '''"
+	echo "'''                                             '''"
+	echo "''' -u - unpacks a deb file                     '''"
+	echo "''' -w - runs the deb file making wizard        '''"
+	echo "''' -p - runs the dpkg command to pack up a deb '''"
+	echo "'''      file                                   '''"
+	echo "''' -gu - gets a deb from provided web address  '''"
+	echo "'''       and then unpacks it                   '''"
+	echo "''' -r - gets a deb file from repository        '''"
+	echo "'''''''''''''''''''''''''''''''''''''''''''''''''''"
+fi
+if [[ $1 == "-u" ]]; then
+	sudo gdebi $2
+	exit
+fi

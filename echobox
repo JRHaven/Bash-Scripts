@@ -1,0 +1,19 @@
+#!/bin/bash
+if [[ ! $1 == "" ]]; then
+	chars=$((${#1} + 4))
+	#echo $chars
+	for ((n=0;n<$chars;n++)); do printf "-" ;done
+	printf "\n"
+	printf "| $1 |\n"
+	for ((n=0;n<$chars;n++)); do printf "-" ;done
+	printf "\n"
+	exit
+fi
+read message
+chars=$((${#message} + 4))
+#echo $chars
+for ((n=0;n<$chars;n++)); do printf "-" ;done
+printf "\n"
+printf "| $message |\n"
+for ((n=0;n<$chars;n++)); do printf "-" ;done
+printf "\n"

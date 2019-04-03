@@ -1,0 +1,3 @@
+#!/bin/bash
+cd ~/Media/ExtHDD
+sudo mount -t exfat $1 $2

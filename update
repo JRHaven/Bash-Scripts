@@ -1,0 +1,211 @@
+#!/bin/bash
+
+# Update 3.4 Bash Script
+#
+# This Bash Script was made by JRTech and updates your system
+# Your system MUST be based on Debian to work out of the box.
+# Your system MUST have cat, echo, and shutdown installed to work properly.
+# Feel free to change this bash script as much as you want. This is not propiatary.
+set -e
+if [[ $1 == "--choice=1" ]]; then
+	sudo apt-get update >> /tmp/updatelog
+        echo "If something didn't go right, check the log at /tmp/updatelog"
+	echo " " >> /tmp/updatelog
+	echo "Written :" >> /tmp/updatelog
+	date >> /tmp/updatelog
+	echo " " >> /tmp/updatelog
+	exit
+fi
+if [[ $1 == "--choice=2" ]]; then
+        sudo apt-get upgrade >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "If something didn't go right, check the log at /tmp/updatelog"
+        exit
+fi
+if [[ $1 == "--choice=3" ]]; then
+        sudo apt-get dist-upgrade >> /tmp/updatelog
+        echo "If something didn't go right, check the log at /tmp/updatelog"
+        echo ""
+        exit
+fi
+if [[ $1 == "--choice=4" ]]; then
+	echo "Running apt-get update..."
+        sudo apt-get update >> /tmp/updatelog
+        echo "Running apt-get upgrade..."
+        sudo apt-get upgrade -y >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "If something didn't go right, check the log at /tmp/updatelog"
+	exit
+fi
+if [[ $1 == "--choice=5" ]]; then
+        if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+                echo "Do you want to backup the update log? [y,N]"
+                read backup
+        fi
+        echo "Press Enter When You Have Saved Work and Closed any Open Applicat$
+        read junk
+        if [[ $backup == "y" ]]; then
+                cp /tmp/updatelog ~/updatelog
+        fi
+        if [[ $backup == "Y" ]]; then
+                cp /tmp/updatelog ~/updatelog
+        fi
+        shutdown -r now
+fi
+if [[ $1 == "shutdown" ]]; then
+        if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+                echo "Do you want to backup the update log? [y,N]"
+                read backup
+        fi
+        echo "Press Enter When You Have Saved Work and Closed any Open Applicat$
+        read junk
+        if [[ $backup == "y" ]]; then
+                cp /tmp/updatelog ~/updatelog
+        fi
+        if [[ $backup == "Y" ]]; then
+                cp /tmp/updatelog ~/updatelog
+        fi
+        shutdown -h now
+fi
+if [[ $1 == "--log" ]]; then
+	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+                while [ true ]; do
+			cat /tmp/updatelog
+			sleep 1
+			clear
+		done
+		exit
+	fi
+	echo "Could not find the update log"
+fi
+if [[ ! $1 == "--no-internet-check" ]]; then
+	ping www.google.com -c 3
+	echo ""
+	echo "If there is no responce, type (N)o connection. If there is, type (C)onnection."
+	read connection
+	clear
+	if [[ $connection == "N" ]]; then
+		echo "You cannot update without an internet connection. To update, connect to the internet."
+		exit
+	fi
+	if [[ $connection == "n" ]]; then
+        	echo "You cannot update without an internet connection. To update, connect to the internet."
+        	exit
+	fi
+	clear
+fi
+echo What do you want to do?
+echo ""
+echo ""
+echo "		1: Update Cache"
+echo "		2: Upgrade System"
+echo "		3: Upgrade Using dist-upgrade"
+echo "		4: Use Quick Update"
+echo "		5: Reboot"
+echo "		6: Exit"
+echo "		7: View the log"
+echo "		8: Backup the log to Home folder"
+echo ""
+echo ""
+read choice
+clear
+if [[ $choice == "1" ]]; then
+	sudo apt-get update >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+	echo "If something didn't go right, check the log at /tmp/updatelog"
+	echo ""
+	update --no-internet-check
+fi
+if [[ $choice == "2" ]]; then
+	sudo apt-get upgrade -y >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+	echo "If something didn't go right, check the log at /tmp/updatelog"
+	echo ""
+	update --no-internet-check
+fi
+if [[ $choice == "3" ]]; then
+	sudo apt-get dist-upgrade -y >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+	echo "If something didn't go right, check the log at /tmp/updatelog"
+	echo ""
+	update --no-internet-check
+fi
+if [[ $choice == "4" ]]; then
+	echo "Running apt-get update..."
+	sudo apt-get update >> /tmp/updatelog
+	echo "Running apt-get upgrade..."
+	sudo apt-get upgrade -y >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+        echo "Written :" >> /tmp/updatelog
+        date >> /tmp/updatelog
+        echo " " >> /tmp/updatelog
+	clear
+	echo "If something didn't go right, check the log at /tmp/updatelog"
+	echo ""
+	update --no-internet-check
+fi
+if [[ $choice == "5" ]]; then
+	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+		echo "Do you want to backup the update log? [y,N]"
+		read backup
+	fi
+	echo "Press Enter When You Have Saved Work and Closed any Open Applications..."
+	read junk
+	if [[ $backup == "y" ]]; then
+		cp /tmp/updatelog ~/updatelog
+	fi
+	if [[ $backup == "Y" ]]; then
+                cp /tmp/updatelog ~/updatelog
+        fi
+	shutdown -r now
+fi
+if [[ $choice == "6" ]]; then
+	clear
+	exit
+fi
+if [[ $choice == "7" ]]; then
+	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+		cat /tmp/updatelog
+		echo ""
+		echo " Press enter when finished."
+		read junk
+		clear
+		update --no-internet-check
+		exit
+	fi
+	echo "Could not find the update log"
+	update --no-internet-check
+fi
+if [[ $choice == "8" ]]; then
+	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+		echo Backing up log...
+		cd /tmp
+		echo "" >> ~/updatelog
+		echo "Log Backup" >> ~/updatelog
+		echo "" >> ~/updatelog
+		cat updatelog >> ~/updatelog
+		clear
+                echo Log Was Copied to Home Folder
+		update --no-internet-check
+		exit
+	fi
+	clear
+	echo "No log to back up!!!"
+	update --no-internet-check
+	exit
+fi

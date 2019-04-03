@@ -1,0 +1,15 @@
+#!/bin/bash
+if [[ $2 == "-t" ]]; then
+	dmcs $1.cs
+	chmod 755 $1.exe
+	./$1.exe
+	rm $1.exe
+	exit
+fi
+if [[ $2 == "-c" ]]; then
+	dmcs $1.cs
+	chmod 755 $1.exe
+	exit
+fi
+echo "No Argument. Use -t for testing purposes or -c to keep the executable."
+exit

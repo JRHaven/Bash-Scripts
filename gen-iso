@@ -1,0 +1,50 @@
+#!/bin/bash
+if [[ $1 == "" ]] 
+then
+	echo Cannot do anything without arguments. Try gen-iso --help for list
+	echo of arguments
+	exit
+fi
+if [[ $1 == "--help" ]] 
+then
+	echo gen-iso - the .iso creater
+	echo 
+	echo by Jeremiah Haven
+	echo 
+	echo 
+	echo "gen-iso's only argument is it's -s argument to specify the size"
+	echo of the iso file. You can also use -n for a file name. The default
+	echo 'is "image.iso".'
+	exit
+fi
+if [[ $1 == "-s" ]] 
+then
+	if [[ $2 == "" ]] 
+	then
+		echo Must give a size in G for gigabytes and M for Megabytes.
+		exit
+	else
+		if [[ $1 == "-n" ]] 
+		then
+			echo Can only use -n argument after -s argument.
+			exit
+		fi
+		if [[ $3 == "-n" ]] 
+		then
+			if [[ $4 == "" ]] 
+			then
+				echo Must type in a name for the .iso file after
+				echo -n argument.
+				exit
+			else
+				fallocate -l $2 $4
+				exit
+			fi
+		else
+			fallocate -l $2 image.img
+			exit
+		fi
+fi
+
+exit
+exit

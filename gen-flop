@@ -1,0 +1,6 @@
+#!/bin/bash
+echo Generating Image...
+fallocate -l 1474560 image.img
+echo Formating...
+mkfs.vfat image.img >/dev/null
+echo Done

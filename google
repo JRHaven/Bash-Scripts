@@ -1,0 +1,8 @@
+#!/bin/bash
+if [[ $(apt list --installed | grep googler) == "" ]]; then
+	echo First, installing googler...
+	sudo apt-get install googler
+	echo done.
+fi
+echo Googling $1 $2 $3 $4 $5 $6 $7 $8 $9
+googler $1 $2 $3 $4 $5 $6 $7 $8 $9

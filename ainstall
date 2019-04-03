@@ -1,0 +1,258 @@
+#!/bin/bash
+set -e
+if [[ $1 == "--help" ]]; then
+	echo "----------------------------------------"
+	echo "| ainstall: A program for apt          |"
+        echo "|                                      |"
+        echo "| ainstall is a program that runs on   |"
+        echo "| top of apt.                          |"
+        echo "|                                      |"
+        echo "| Arguments:                           |"
+        echo "|                                      |"
+	echo "| -i = install a package               |"
+        echo "| -r = remove a package                |"
+        echo "| -p = purge a package                 |"
+	echo "| -si = installs a snap only if        |"
+	echo "|       snapcraft is installed.        |"
+	echo "| -sr = removes a snap only if         |"
+        echo "|       snapcraft is installed.        |"
+        echo "| -ar = add a repository such as a ppa |"
+	echo "| -ari = add repository, than install  |"
+	echo "|        package                       |"
+        echo "| -i = update a package                |"
+        echo "| -u = update the cache using update   |"
+        echo "| -du = upgrade system using           |"
+	echo "|       dist-upgrade and update        |"
+	echo "| -c = Clean up un-needed packages to  |"
+	echo "|      save space                      |"
+	echo "| --clean = Clean up any files         |"
+	echo "|           ainstall may have left     |"
+	echo "|           behind.                    |"
+	echo "| -ri = Reinstall a package            |"
+        echo "----------------------------------------"
+	exit
+fi
+odir=$(pwd)
+#clear
+cd ~/bin
+if [[ $(ls | grep echobox) == "" ]]; then
+	cd /usr/local/bin
+	if [[ $(ls | grep echobox) == "" ]]; then
+		echo "-------------------------------------------------"
+		echo '| A script called "echobox" is not present.     |'
+		echo "| ainstall comes with this package, so try      |"
+		echo "| try putting echobox in either ~/bin or        |"
+		echo "| /usr/local/bin. ainstall will not be able to  |"
+		echo "| work without this package and keep throwing   |"
+		echo "| this error until it can find echobox.         |"
+		echo "-------------------------------------------------"
+		exit
+	fi
+fi
+cd ~/bin
+if [[ $(ls | grep update) == "" ]]; then
+        cd /usr/local/bin
+        if [[ $(ls | grep update) == "" ]]; then
+                echo "-------------------------------------------------"
+                echo '| A script called "update" is not present.      |'
+                echo "| ainstall comes with this package, so try      |"
+                echo "| try putting update in either ~/bin or         |"
+                echo "| /usr/local/bin. ainstall will not be able to  |"
+                echo "| work without this package and keep throwing   |"
+                echo "| this error until it can find update.          |"
+                echo "-------------------------------------------------"
+                exit
+        fi
+fi
+cd $odir
+if [[ $1 == "-i" ]]; then
+	if [[ $2 == "" ]]; then
+		echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ install\!
+		exit
+	fi
+	sudo echo Welcome to ainstall!
+	echo ""
+	sudo apt update > .lastcupout
+	# Does not work.
+	#if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
+	#	echo could not find package $2
+	#	exit
+	#fi
+	sudo apt-get install $2
+	echo ""
+	echo "Done"
+	if [[ $3 == "--clean" ]]; then
+                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                        echobox Nothing\ to\ clean\ up\.\.\.
+                        exit
+                fi
+		rm .lastcupout
+	fi
+	exit
+fi
+if [[ $1 == "-c" ]]; then
+	sudo echo Welcome to ainstall!
+        echo ""
+	sudo apt-get autoremove
+	echo ""
+        echo "Done"
+        if [[ $2 == "--clean" ]]; then
+		if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+			echobox Nothing\ to\ clean\ up\.\.\.
+			exit
+		fi
+                rm .lastcupout
+        fi
+        exit
+fi
+if [[ $1 == "-r" ]]; then
+        if [[ $2 == "" ]]; then
+                echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ remove\!
+                exit
+        fi
+        sudo echo Welcome to ainstall!
+        echo ""
+        #sudo apt-get update > .lastcupout
+        # Does not work.
+        #if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
+        #       echo could not find package $2
+        #       exit
+        #fi
+        sudo apt-get remove $2
+        echo ""
+        echo "Done"
+        if [[ $3 == "--clean" ]]; then
+                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                        echobox Nothing\ to\ clean\ up\.\.\.
+                        exit
+                fi
+                rm .lastcupout
+        fi
+        exit
+fi
+if [[ $1 == "-p" ]]; then
+        if [[ $2 == "" ]]; then
+                echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ purge\!
+                exit
+        fi
+        sudo echo Welcome to ainstall!
+        echo ""
+        #sudo apt-get update > .lastcupout
+        # Does not work.
+        #if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
+        #       echo could not find package $2
+        #       exit
+        #fi
+        sudo apt-get purge $2
+        echo ""
+        echo "Done"
+        if [[ $3 == "--clean" ]]; then
+                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                        echobox Nothing\ to\ clean\ up\.\.\.
+                        exit
+                fi
+                rm .lastcupout
+        fi
+        exit
+fi
+if [[ $1 == "-ar" ]]; then
+	sudo echo Welcome to ainstall!
+	echo ""
+        if [[ $2 == "" ]]; then
+                echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ any\ repository\ to\ add\!
+                exit
+        fi
+	sudo add-apt-repository $2
+	sudo apt-get update > .lastcupout
+	echo ""
+        echo "Done"
+        if [[ $3 == "--clean" ]]; then
+                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                        echobox Nothing\ to\ clean\ up\.\.\.
+                        exit
+                fi
+                rm .lastcupout
+        fi
+        exit
+fi
+if [[ $1 == "-ari" ]]; then
+        sudo echo Welcome to ainstall!
+	echo ""
+        if [[ $2 == "" ]]; then
+                echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ any\ repository\ to\ add\!
+                exit
+        fi
+	echo Adding Repository...
+        sudo add-apt-repository $2
+	echo Updating Cache...
+	sudo apt-get update > .lastcupout
+	echo Installing Software...
+	if [[ $3 == "" ]]; then
+                echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ install\!
+                exit
+        fi
+	sudo apt-get install $3
+        echo ""
+        echo "Done"
+        if [[ $4 == "--clean" ]]; then
+                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                        echobox Nothing\ to\ clean\ up\.\.\.
+                        exit
+                fi
+                rm .lastcupout
+        fi
+        exit
+fi
+if [[ $1 == "-u" ]]; then
+	sudo echo Welcome to ainstall!
+	echo ""
+	update --choice=1
+	echo ""
+	echo Done
+	exit
+fi
+if [[ $1 == "-du" ]]; then
+	sudo echo Welcome to ainstall!
+	echo ""
+	update --choice=3
+	echo ""
+	echo Done
+	exit
+fi
+if [[ $1 == "--clean" ]]; then
+	if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+        	echobox Nothing\ to\ clean\ up\.\.\.
+                exit
+        fi
+        rm .lastcupout
+        exit
+fi
+if [[ $1 == "-si" ]]; then
+	sudo echo Welcome to ainstall!
+	sudo snap install $2
+	echo Done
+	exit
+fi
+if [[ $1 == "-sr" ]]; then
+        sudo echo Welcome to ainstall!
+        sudo snap remove $2
+        echo Done
+	exit
+fi
+if [[ $1 == "-ri" ]]; then
+	sudo echo Welcome to ainstall!
+	sleep 1
+	echo ""
+	echo Removing Package $2...
+	sudo apt-get remove $2
+	echo ""
+	echo Updating Cache...
+	sudo apt-get update > .lastcupout
+	echo ""
+	echo Installing Package $2...
+	sudo apt-get install $2
+	echo Done
+	exit
+fi
+echobox Not\ Found\.\ Try\ again\ with\ \'\-\-help\'\.
+exit

@@ -1,0 +1,86 @@
+#!/bin/bash
+cd $2
+if [[ $1 == "-b" ]]; then
+	clear
+	gcc $3
+	./a.out
+	exit
+fi
+if [[ $1 == "-br" ]]; then
+	clear
+        gcc $3
+        ./a.out
+	rm a.out
+        exit
+fi
+if [[ $1 == "-c" ]]; then
+	clear
+	gcc $3 -o $4
+	./$4
+	exit
+fi
+if [[ $1 == "-cr" ]]; then
+	clear
+        gcc $3 -o $4
+        ./$4
+	rm $4
+        exit
+fi
+if [[ $1 == "-vc" ]]; then
+	clear
+	gcc -std=c$4 $3 -o $5
+	./$4
+	exit
+fi
+if [[ $1 == "-vcr" ]]; then
+	clear
+        gcc -std=c$4 $3 -o $5
+        ./$4
+	rm $4
+        exit
+fi
+if [[ $1 == "-v" ]]; then
+	clear
+	gcc -std=c$4 $3
+	./a.out
+	exit
+fi
+if [[ $1 == "-vr" ]]; then
+	clear
+        gcc -std=c$4 $3
+        ./a.out
+	rm a.out
+        exit
+fi
+if [[ $1 == "--help" ]]; then
+	echo "-------------------------------------------"
+	echo "| Welcome to my custom compile script     |"
+	echo "| for C!!! This has many arguments it     |"
+	echo "| can use for various ways to compile,    |"
+	echo "| so here is a quick list.                |"
+	echo "|                                         |"
+	echo "| -b: Use basic settings to simply        |"
+	echo "|     compile the .c file with gcc's      |"
+	echo "|     default settings and return an      |"
+	echo "|     a.out file to be executed.          |"
+	echo "| -br: Same as -b but removes the a.out   |"
+	echo "|      file                               |"
+	echo "| -c: Same as -b but tells gcc to use     |"
+	echo "|     a custom name of your choice,       |"
+	echo "|     specified after the name of the     |"
+	echo "|     file to compile.                    |"
+	echo "| -cr: Same as -c but removes the         |"
+	echo "|      executable file                    |"
+	echo "| -v: Same as -b but tells gcc to         |"
+	echo "|     compile using a custom version      |"
+	echo "|     specified after the file to         |"
+	echo "|     compile.                            |"
+	echo "| -vr: Same as -v but removes the a.out   |"
+	echo "|      file                               |"
+	echo "| -vc: Does both the -v and -c function   |"
+	echo "| -vcr: Does both the -v and -cr function |"
+	echo "-------------------------------------------"
+	exit
+fi
+echo Please specify how to compile. If unknown,
+echo use --help.
