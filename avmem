@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Basic script that tels your the amount of avaliable ram you have, updating every second.
+# Use Ctrl + C to escape back to the prompt.
 while [ true ];
 do
 	clear
