@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Compilec is a script to help me compile C# scripts developed under mono.
 if [[ $2 == "-t" ]]; then
 	dmcs $1.cs
 	chmod 755 $1.exe
