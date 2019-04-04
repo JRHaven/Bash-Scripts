@@ -1,2 +1,5 @@
 #!/bin/bash
+
+# Shortcut to the old GNOME desktop new launcher wizard. I do not know if this works on modern versions of GNOME.
+
 gnome-desktop-item-edit --create-new ~/Desktop
