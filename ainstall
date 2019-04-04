@@ -1,5 +1,22 @@
 #!/bin/bash
+
+# ainstall is a script for Debian and Debian-Based distros. It makes it easiar to do tasks like install a package
+# by using syntex with only a few letters. For example:
+# Instead of using "sudo apt install thepackage",
+# just type "ainstall -i thepackage".
+
+# It also takes care of adding ppa's (Ubuntu and Ubuntu Based distros only) in one single command For example:
+# Instead of typing the following:
+# sudo add-apt-repository ppa://author/repo
+# sudo apt update
+# sudo apt install thepackage
+# 
+# Just type "ainstall -ari ppa://author/repo thepackage"
+
+# Exit upon errors
 set -e
+
+# Help command
 if [[ $1 == "--help" ]]; then
 	echo "----------------------------------------"
 	echo "| ainstall: A program for apt          |"
@@ -32,8 +49,9 @@ if [[ $1 == "--help" ]]; then
         echo "----------------------------------------"
 	exit
 fi
+
+# Go out and look for needed packages like echobox
 odir=$(pwd)
-#clear
 cd ~/bin
 if [[ $(ls | grep echobox) == "" ]]; then
 	cd /usr/local/bin
@@ -65,6 +83,8 @@ if [[ $(ls | grep update) == "" ]]; then
         fi
 fi
 cd $odir
+
+# Install command
 if [[ $1 == "-i" ]]; then
 	if [[ $2 == "" ]]; then
 		echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ install\!
@@ -72,15 +92,14 @@ if [[ $1 == "-i" ]]; then
 	fi
 	sudo echo Welcome to ainstall!
 	echo ""
+	
+	# Updates cache and puts output in a log file
 	sudo apt update > .lastcupout
-	# Does not work.
-	#if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
-	#	echo could not find package $2
-	#	exit
-	#fi
 	sudo apt-get install $2
 	echo ""
 	echo "Done"
+	
+	# Get rid of log file if requested to and if there
 	if [[ $3 == "--clean" ]]; then
                 if [[ $(ls -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
@@ -90,6 +109,8 @@ if [[ $1 == "-i" ]]; then
 	fi
 	exit
 fi
+
+# Apt's autoremove function command
 if [[ $1 == "-c" ]]; then
 	sudo echo Welcome to ainstall!
         echo ""
@@ -105,6 +126,8 @@ if [[ $1 == "-c" ]]; then
         fi
         exit
 fi
+
+# Remove command
 if [[ $1 == "-r" ]]; then
         if [[ $2 == "" ]]; then
                 echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ remove\!
@@ -112,12 +135,6 @@ if [[ $1 == "-r" ]]; then
         fi
         sudo echo Welcome to ainstall!
         echo ""
-        #sudo apt-get update > .lastcupout
-        # Does not work.
-        #if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
-        #       echo could not find package $2
-        #       exit
-        #fi
         sudo apt-get remove $2
         echo ""
         echo "Done"
@@ -130,6 +147,8 @@ if [[ $1 == "-r" ]]; then
         fi
         exit
 fi
+
+# Purge command
 if [[ $1 == "-p" ]]; then
         if [[ $2 == "" ]]; then
                 echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ purge\!
@@ -137,12 +156,6 @@ if [[ $1 == "-p" ]]; then
         fi
         sudo echo Welcome to ainstall!
         echo ""
-        #sudo apt-get update > .lastcupout
-        # Does not work.
-        #if [[ $(apt-cache pkgnames | grep $2 > /dev/null) == "" ]]; then
-        #       echo could not find package $2
-        #       exit
-        #fi
         sudo apt-get purge $2
         echo ""
         echo "Done"
@@ -155,6 +168,8 @@ if [[ $1 == "-p" ]]; then
         fi
         exit
 fi
+
+# Add repo command
 if [[ $1 == "-ar" ]]; then
 	sudo echo Welcome to ainstall!
 	echo ""
@@ -175,6 +190,8 @@ if [[ $1 == "-ar" ]]; then
         fi
         exit
 fi
+
+# Add repo then install package command
 if [[ $1 == "-ari" ]]; then
         sudo echo Welcome to ainstall!
 	echo ""
@@ -203,6 +220,8 @@ if [[ $1 == "-ari" ]]; then
         fi
         exit
 fi
+
+# Update command (Requires update script)
 if [[ $1 == "-u" ]]; then
 	sudo echo Welcome to ainstall!
 	echo ""
@@ -211,6 +230,8 @@ if [[ $1 == "-u" ]]; then
 	echo Done
 	exit
 fi
+
+# Dist-upgrade command (Requires update script)
 if [[ $1 == "-du" ]]; then
 	sudo echo Welcome to ainstall!
 	echo ""
@@ -219,6 +240,8 @@ if [[ $1 == "-du" ]]; then
 	echo Done
 	exit
 fi
+
+# Remove log file
 if [[ $1 == "--clean" ]]; then
 	if [[ $(ls -a | grep .lastcupout) == "" ]]; then
         	echobox Nothing\ to\ clean\ up\.\.\.
@@ -227,18 +250,24 @@ if [[ $1 == "--clean" ]]; then
         rm .lastcupout
         exit
 fi
+
+# Install a snap command
 if [[ $1 == "-si" ]]; then
 	sudo echo Welcome to ainstall!
 	sudo snap install $2
 	echo Done
 	exit
 fi
+
+# Remove a snap command
 if [[ $1 == "-sr" ]]; then
         sudo echo Welcome to ainstall!
         sudo snap remove $2
         echo Done
 	exit
 fi
+
+# Re-install command
 if [[ $1 == "-ri" ]]; then
 	sudo echo Welcome to ainstall!
 	sleep 1
@@ -254,5 +283,7 @@ if [[ $1 == "-ri" ]]; then
 	echo Done
 	exit
 fi
+
+# If no argument is typed, show this.
 echobox Not\ Found\.\ Try\ again\ with\ \'\-\-help\'\.
 exit
