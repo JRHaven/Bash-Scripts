@@ -1,6 +1,12 @@
 #!/bin/bash
+# gen-flop is a basic script that generates a floppy image
+
 echo Generating Image...
+
+# Use fallocate to make a new empty file called "image.img"
 fallocate -l 1474560 image.img
 echo Formating...
-mkfs.vfat image.img >/dev/null
+
+# Format floppy image with fat32
+mkfs.vfat image.img >>/dev/null
 echo Done
