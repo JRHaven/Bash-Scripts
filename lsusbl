@@ -1,4 +1,6 @@
 #!/bin/bash
+# lsusbl is for problem-solving things pluged into the usb port. It constantly updates using the lsusb command
+
 lsusb
 echo 
 echo 
