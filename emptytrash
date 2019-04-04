@@ -1,8 +1,5 @@
 #!/bin/bash
-if [[ $1 == "-v" ]]; then
-	cd ~/.local/share/Trash/files
-	rm -vr *
-	exit
-fi
+# emptytrash is a basic script you run from the commamd line to empty the trash.
+
 cd ~/.local/share/Trash/files
 rm -r *
