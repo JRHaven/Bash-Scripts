@@ -1,2 +1,4 @@
 #!/bin/bash
+
+# aistarter simply is a shortcut for the aistarter command.
 /usr/google/appinventor/commands-for-Appinventor/aiStarter &
