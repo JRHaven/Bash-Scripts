@@ -1,9 +1,0 @@
-#!/bin/bash
-for((n=0;n<6;n++)); do
-	loop&
-	sleep 5
-	for((m=0;m<150;m++)); do
-		killall loop > /dev/null
-	done
-done
-
