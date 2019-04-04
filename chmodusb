@@ -1,9 +1,0 @@
-#!/bin/bash
-# Check for sudo privilages and get them if needed
-sudo echo dskl > .junk
-
-# Chmod
-sudo chmod $1 /media/jeremiah/Shared\ File/$2
-
-# Remove junk file created earlier
-rm .junk
