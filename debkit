@@ -1,4 +1,9 @@
 #!/bin/bash
+# WARNING!!! THIS FILE IS NOT FINISHED!!! I only started development on it a couple days ago.
+# WARNING!!! THIS FILE IS NOT FINISHED!!! I only started development on it a couple days ago.
+# WARNING!!! THIS FILE IS NOT FINISHED!!! I only started development on it a couple days ago.
+# WARNING!!! THIS FILE IS NOT FINISHED!!! I only started development on it a couple days ago.
+# WARNING!!! THIS FILE IS NOT FINISHED!!! I only started development on it a couple days ago.
 echo Checking for gdebi.....
 dpkg -l | grep -qw gdebi || sudo apt-get install -yyq gdebi
 echo "gdebi installed!"
