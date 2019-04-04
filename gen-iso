@@ -1,4 +1,6 @@
 #!/bin/bash
+# gen-iso DOES NOT WORK!!! It got overly bloated and I stopped working on it.
+
 if [[ $1 == "" ]] 
 then
 	echo Cannot do anything without arguments. Try gen-iso --help for list
@@ -8,8 +10,6 @@ fi
 if [[ $1 == "--help" ]] 
 then
 	echo gen-iso - the .iso creater
-	echo 
-	echo by Jeremiah Haven
 	echo 
 	echo 
 	echo "gen-iso's only argument is it's -s argument to specify the size"
