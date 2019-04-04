@@ -1,4 +1,0 @@
-#!/bin/bash
-sudo echo lak > .junk
-sudo cp $1 /media/jeremiah/Shared\ File/$2
-rm .junk
