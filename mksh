@@ -1,7 +1,14 @@
 #!/bin/bash
+# mksh is a file that is a template for creating another bash script.
+
+# If the requested file does not exist, create it with the "shabang" needed on top of every bash script
 if [[ $(ls | grep $1) == "" ]]; then
 	echo "#!/bin/bash" >> $1
 fi
+
+# Open the file in the nano text editor for editing
 nano $1
+
+# Apply the execute permission then execute
 chmod 755 $1
 ./$1
