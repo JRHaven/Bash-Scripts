@@ -1,10 +1,18 @@
+# pvm is actually a python script that prints out to the screen the message "It's mv NOT vm!!!!!"!
+# I used to be in a havvit of typing vm instead of mv so I wrote this script to remind myself that it
+# is actually mv. This script will later be called on by a bash script
+
 from time import sleep
 import os
+
+# Function written to make code look cleaner
 def writeToScreen(message, time):
 	os.system("clear")
 	print(message)
 	sleep(time)
 	os.system("clear")
+	
+# Write the message
 writeToScreen("Test", 0.01)
 writeToScreen("m", 0.35)
 writeToScreen("\nvm", 0.3)
