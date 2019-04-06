@@ -1,4 +1,9 @@
 #!/bin/bash
+# redctl is a script that requires redshift to be installed. It uses the redshift command to give redshift
+# a "leveled" interface of intensity from 1-7, then "off" to turn it off rather than using the default method
+# of defining the intensity in the redshift command.
+
+# Levels (Goes down by 5000 every time)
 if [ $1 == "1" ]; then
 	redshift -O 5000 >> /dev/null
 fi
@@ -23,5 +28,3 @@ fi
 if [ $1 == "off" ]; then
 	redshift -x >> /dev/null
 fi
-
-
