@@ -1,4 +1,0 @@
-#!/bin/bash
-sudo echo kla > .junk
-sudo mkdir /media/jeremiah/Shared\ File/$1
-rm .junk
