@@ -1,4 +1,0 @@
-#!/bin/bash
-sudo echo jkafs > .junk
-sudo rm -r /media/jeremiah/Shared\ File/$1
-rm .junk
