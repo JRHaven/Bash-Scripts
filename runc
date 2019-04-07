@@ -1,11 +1,23 @@
 #!/bin/bash
+# runc is a script I created to help with C development. Depending on the given arguments it can:
+
+# 1. Compile a C program then run the a.out file (And delete a.out if requested)
+# 2. Compile a C program with a custom name for the executable file (And delete executable if requested)
+# 3. Compile a C program using custom version of std then run the a.out (And delete a.out if requested)
+# 4. Compile a C program then do both numbers 3 and 4
+
+# Get to the directory the program is in
 cd $2
+
+# Number 1 without deleting a.out
 if [[ $1 == "-b" ]]; then
 	clear
 	gcc $3
 	./a.out
 	exit
 fi
+
+# Number 1 with deleting a.out
 if [[ $1 == "-br" ]]; then
 	clear
         gcc $3
@@ -13,12 +25,16 @@ if [[ $1 == "-br" ]]; then
 	rm a.out
         exit
 fi
+
+# Number 2 without deleting executable
 if [[ $1 == "-c" ]]; then
 	clear
 	gcc $3 -o $4
 	./$4
 	exit
 fi
+
+# Number 2 with deleting executable
 if [[ $1 == "-cr" ]]; then
 	clear
         gcc $3 -o $4
@@ -26,12 +42,16 @@ if [[ $1 == "-cr" ]]; then
 	rm $4
         exit
 fi
+
+# Number 4 without deleting executable
 if [[ $1 == "-vc" ]]; then
 	clear
 	gcc -std=c$4 $3 -o $5
 	./$4
 	exit
 fi
+
+# Number 4 with deleting executable
 if [[ $1 == "-vcr" ]]; then
 	clear
         gcc -std=c$4 $3 -o $5
@@ -39,12 +59,16 @@ if [[ $1 == "-vcr" ]]; then
 	rm $4
         exit
 fi
+
+# Number 3 without deleting a.out
 if [[ $1 == "-v" ]]; then
 	clear
 	gcc -std=c$4 $3
 	./a.out
 	exit
 fi
+
+# Number 3 with deleting a.out
 if [[ $1 == "-vr" ]]; then
 	clear
         gcc -std=c$4 $3
@@ -52,6 +76,8 @@ if [[ $1 == "-vr" ]]; then
 	rm a.out
         exit
 fi
+
+# Help File
 if [[ $1 == "--help" ]]; then
 	echo "-------------------------------------------"
 	echo "| Welcome to my custom compile script     |"
@@ -82,5 +108,7 @@ if [[ $1 == "--help" ]]; then
 	echo "-------------------------------------------"
 	exit
 fi
+
+# Final message if no proper arguments are given
 echo Please specify how to compile. If unknown,
 echo use --help.
