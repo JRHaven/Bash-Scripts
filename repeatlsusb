@@ -1,4 +1,6 @@
 #!/bin/bash
+# repeatlsusb makes the lsusbl command better by doing the same thing in a loop
+
 while [[ true ]];
 do
 	lsusb
