@@ -1,4 +1,6 @@
 #!/bin/bash
+# vscodeupdate is a script that uses gdebi to unpack a new visual studio code deb package over an old one
+
 clear
 echo "Download Visual Studio Code and put it in ~/Downloads/Debs. (IMPORTANT)"
 echo ""
