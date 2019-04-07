@@ -1,2 +1,6 @@
 #!/bin/bash
+# sshpi is a script that sshs my raspberry pi on my LAN. This will most likely not work for you and you will either
+# have to change this script or set a static IP on your pi. Note that trying to ssh into the pi using this address
+# will only work if you are on my LAN.
+
 ssh pi@192.168.0.29
