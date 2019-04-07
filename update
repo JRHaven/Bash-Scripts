@@ -1,12 +1,12 @@
 #!/bin/bash
+# update is a script that is another one of my proudest scripts. It does exactly what it says it does, and
+# that is that it will update your system through a simple and easy to use interface. It only works on Debian
+# and Debian-based distros as it uses apt.
 
-# Update 3.4 Bash Script
-#
-# This Bash Script was made by JRTech and updates your system
-# Your system MUST be based on Debian to work out of the box.
-# Your system MUST have cat, echo, and shutdown installed to work properly.
-# Feel free to change this bash script as much as you want. This is not propiatary.
+# Exit on any errors
 set -e
+
+# For use in other scripts
 if [[ $1 == "--choice=1" ]]; then
 	sudo apt-get update >> /tmp/updatelog
         echo "If something didn't go right, check the log at /tmp/updatelog"
@@ -48,7 +48,7 @@ if [[ $1 == "--choice=5" ]]; then
                 echo "Do you want to backup the update log? [y,N]"
                 read backup
         fi
-        echo "Press Enter When You Have Saved Work and Closed any Open Applicat$
+        echo "Press Enter When You Have Saved Work and Closed any Open Applications"
         read junk
         if [[ $backup == "y" ]]; then
                 cp /tmp/updatelog ~/updatelog
@@ -63,7 +63,7 @@ if [[ $1 == "shutdown" ]]; then
                 echo "Do you want to backup the update log? [y,N]"
                 read backup
         fi
-        echo "Press Enter When You Have Saved Work and Closed any Open Applicat$
+        echo "Press Enter When You Have Saved Work and Closed any Open Applications"
         read junk
         if [[ $backup == "y" ]]; then
                 cp /tmp/updatelog ~/updatelog
@@ -84,6 +84,9 @@ if [[ $1 == "--log" ]]; then
 	fi
 	echo "Could not find the update log"
 fi
+
+# Only do this if the user did NOT specify to avoid the internet checking. Otherwise ping google to try to see
+# if there is a connection to the internet. If not, stop and deliver a message.
 if [[ ! $1 == "--no-internet-check" ]]; then
 	ping www.google.com -c 3
 	echo ""
@@ -100,6 +103,8 @@ if [[ ! $1 == "--no-internet-check" ]]; then
 	fi
 	clear
 fi
+
+# Main Menu-type interface setup
 echo What do you want to do?
 echo ""
 echo ""
@@ -113,8 +118,13 @@ echo "		7: View the log"
 echo "		8: Backup the log to Home folder"
 echo ""
 echo ""
+
+# Get the choice the user made and put it into a variable then clear the screen
 read choice
 clear
+
+# Start updating apt's repo list. Put all the output in a log located at /tmp/updatelog. Tell the user that
+# there is a log in the /tmp directory
 if [[ $choice == "1" ]]; then
 	sudo apt-get update >> /tmp/updatelog
         echo " " >> /tmp/updatelog
@@ -123,8 +133,12 @@ if [[ $choice == "1" ]]; then
         echo " " >> /tmp/updatelog
 	echo "If something didn't go right, check the log at /tmp/updatelog"
 	echo ""
+	
+	# Run the script again
 	update --no-internet-check
 fi
+
+# Do a system update. All output goes to /tmp/updatelog.
 if [[ $choice == "2" ]]; then
 	sudo apt-get upgrade -y >> /tmp/updatelog
         echo " " >> /tmp/updatelog
@@ -135,6 +149,8 @@ if [[ $choice == "2" ]]; then
 	echo ""
 	update --no-internet-check
 fi
+
+# Do a system update using dist-upgrade. All output goes to /tmp/updatelog.
 if [[ $choice == "3" ]]; then
 	sudo apt-get dist-upgrade -y >> /tmp/updatelog
         echo " " >> /tmp/updatelog
@@ -145,6 +161,8 @@ if [[ $choice == "3" ]]; then
 	echo ""
 	update --no-internet-check
 fi
+
+# String together numbers 1 and 2. All output goes to /tmp/updatelog.
 if [[ $choice == "4" ]]; then
 	echo "Running apt-get update..."
 	sudo apt-get update >> /tmp/updatelog
@@ -159,6 +177,8 @@ if [[ $choice == "4" ]]; then
 	echo ""
 	update --no-internet-check
 fi
+
+# Restart the system after checking to backup the updatelog to home folder
 if [[ $choice == "5" ]]; then
 	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
 		echo "Do you want to backup the update log? [y,N]"
@@ -174,10 +194,14 @@ if [[ $choice == "5" ]]; then
         fi
 	shutdown -r now
 fi
+
+# Exit the script
 if [[ $choice == "6" ]]; then
 	clear
 	exit
 fi
+
+# Display the updatelog
 if [[ $choice == "7" ]]; then
 	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
 		cat /tmp/updatelog
@@ -191,13 +215,20 @@ if [[ $choice == "7" ]]; then
 	echo "Could not find the update log"
 	update --no-internet-check
 fi
+
+# Backup the updatelog to home folder. First check to make sure it exists
 if [[ $choice == "8" ]]; then
 	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
 		echo Backing up log...
 		cd /tmp
+		
+		# Log the Log Backup in the backed up log
 		echo "" >> ~/updatelog
 		echo "Log Backup" >> ~/updatelog
 		echo "" >> ~/updatelog
+		
+		# Add the contents of the origonal update to the updatelgo instead of
+		# replacing it
 		cat updatelog >> ~/updatelog
 		clear
                 echo Log Was Copied to Home Folder
