@@ -1,3 +1,6 @@
 #!/bin/bash
+# One time I tried to run compiz in xfce and it didn't work. I used this script to replace compiz with xfwm and
+# open a terminal afterward.
+
 gnome-terminal
 xfwm4 --replace
