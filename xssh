@@ -1,7 +1,8 @@
 #!/bin/bash
+# xssh is a script I use for sshing with the ability to use x forwarding with a shortcut to my server
+
 pivar="192.168.0.29"
-#echo $pivar
-if [[ $1 == "server" ]]; then
+if [[ $1 == "server"]]; then
 	ssh -X $2@$pivar
 	exit
 fi
