@@ -18,6 +18,14 @@
 # update is a script that is another one of my proudest scripts. It does exactly what it says it does, and
 # that is that it will update your system through a simple and easy to use interface. It only works on Debian
 # and Debian-based distros as it uses apt.
+#
+# 4.1 Updates:
+# - The backup of the log process is more efficient, removing the old log after backup
+# - The internet connection interface is more refined
+# - Constant reminder of the updatelog's path is removed because of the builtin functionality
+#   to see the update log from within the main menu.
+# - In all cases, even with the --no-internet-check argument, whenever the script is started
+#   the screen is cleared.
 
 # Exit on any errors
 set -e
@@ -103,22 +111,21 @@ fi
 
 # Only do this if the user did NOT specify to avoid the internet checking. Otherwise ping google to try to see
 # if there is a connection to the internet. If not, stop and deliver a message.
+# NEW in 4.1: Improved interface
 if [[ ! $1 == "--no-internet-check" ]]; then
-	ping www.google.com -c 3
+	ping www.google.com -c 3 | grep packet
 	echo ""
-	echo "If there is no responce, type (N)o connection. If there is, type (C)onnection."
+	printf "Was there 3 packets recieved? [y,N] "
 	read connection
 	clear
-	if [[ $connection == "N" ]]; then
-		echo "You cannot update without an internet connection. To update, connect to the internet."
-		exit
+	if [[ ! $connection == "y" ]]; then
+		if [[ ! $connection == "Y" ]]; then
+        		echo "You cannot update without an internet connection. To update, connect to the internet."
+        		exit
+		fi
 	fi
-	if [[ $connection == "n" ]]; then
-        	echo "You cannot update without an internet connection. To update, connect to the internet."
-        	exit
-	fi
-	clear
 fi
+clear
 
 # Main Menu-type interface setup
 echo What do you want to do?
@@ -149,7 +156,8 @@ if [[ $choice == "1" ]]; then
         echo " " >> /tmp/updatelog
 	echo "If something didn't go right, check the log at /tmp/updatelog"
 	echo ""
-	
+	clear
+
 	# Run the script again
 	update --no-internet-check
 fi
@@ -163,6 +171,7 @@ if [[ $choice == "2" ]]; then
         echo " " >> /tmp/updatelog
 	echo "If something didn't go right, check the log at /tmp/updatelog"
 	echo ""
+	clear
 	update --no-internet-check
 fi
 
@@ -246,6 +255,11 @@ if [[ $choice == "8" ]]; then
 		# Add the contents of the origonal update to the updatelgo instead of
 		# replacing it
 		cat updatelog >> ~/updatelog
+
+		# NEW as of 4.1: Remove origonal updatelog so that it dosen't backup the same
+		# thing to the backup log
+		rm updatelog
+
 		clear
                 echo Log Was Copied to Home Folder
 		update --no-internet-check
