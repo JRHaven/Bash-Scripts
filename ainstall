@@ -50,6 +50,8 @@ if [[ $1 == "--help" ]]; then
 	echo "|       snapcraft is installed.        |"
 	echo "| -sr = removes a snap only if         |"
         echo "|       snapcraft is installed.        |"
+	echo "| -sic = installs a snap with          |"
+	echo "|        --classic flag.               |"
         echo "| -ar = add a repository such as a ppa |"
 	echo "| -ari = add repository, than install  |"
 	echo "|        package                       |"
@@ -69,34 +71,39 @@ fi
 
 # Go out and look for needed packages like echobox
 odir=$(pwd)
-cd ~/bin
 if [[ $(ls | grep echobox) == "" ]]; then
 	cd /usr/local/bin
 	if [[ $(ls | grep echobox) == "" ]]; then
-		echo "-------------------------------------------------"
-		echo '| A script called "echobox" is not present.     |'
-		echo "| ainstall comes with this package, so try      |"
-		echo "| try putting echobox in either ~/bin or        |"
-		echo "| /usr/local/bin. ainstall will not be able to  |"
-		echo "| work without this package and keep throwing   |"
-		echo "| this error until it can find echobox.         |"
-		echo "-------------------------------------------------"
-		exit
+		cd /usr/bin
+		if [[ $(ls | grep echobox) == "" ]]; then
+			echo "-------------------------------------------------"
+                        echo '| A script called "echobox" is not present.     |'
+                        echo "| ainstall comes with this package, so try      |"
+                        echo "| try putting update in ~/bin, /usr/local/bin,  |"
+                        echo "| or /usr/bin. ainstall will not be able to     |"
+                        echo "| work without this package and keep throwing   |"
+                        echo "| this error until it can find echobox.         |"
+                        echo "-------------------------------------------------"
+			exit
+		fi
 	fi
 fi
 cd ~/bin
 if [[ $(ls | grep update) == "" ]]; then
         cd /usr/local/bin
         if [[ $(ls | grep update) == "" ]]; then
-                echo "-------------------------------------------------"
-                echo '| A script called "update" is not present.      |'
-                echo "| ainstall comes with this package, so try      |"
-                echo "| try putting update in either ~/bin or         |"
-                echo "| /usr/local/bin. ainstall will not be able to  |"
-                echo "| work without this package and keep throwing   |"
-                echo "| this error until it can find update.          |"
-                echo "-------------------------------------------------"
-                exit
+		cd /usr/bin
+		if [[ $(ls | grep update) == "" ]]; then
+ 	                echo "-------------------------------------------------"
+        	        echo '| A script called "update" is not present.      |'
+                	echo "| ainstall comes with this package, so try      |"
+	                echo "| try putting update in ~/bin, /usr/local/bin,  |"
+        	        echo "| or /usr/bin. ainstall will not be able to     |"
+                	echo "| work without this package and keep throwing   |"
+	                echo "| this error until it can find update.          |"
+        	        echo "-------------------------------------------------"
+                	exit
+		fi
         fi
 fi
 cd $odir
@@ -281,6 +288,14 @@ if [[ $1 == "-sr" ]]; then
         sudo echo Welcome to ainstall!
         sudo snap remove $2
         echo Done
+	exit
+fi
+
+# Install a snap with the --classic argument at the end
+if [[ $1 == "-sic" ]]; then
+	sudo echo Welcome to ainstall!
+	sudo snap install $2 --classic
+	echo Done
 	exit
 fi
 
