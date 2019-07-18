@@ -15,7 +15,7 @@
 # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# mksh is a file that is a template for creating another bash script.
+# mkshell is a file that is a template for creating another bash script.
 
 # If the requested file does not exist, create it with the "shabang" needed on top of every bash script
 if [[ $(ls | grep $1) == "" ]]; then
