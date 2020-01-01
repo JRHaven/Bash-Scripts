@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script is under the MIT License.
-# Copyright 2019 Jeremiah Haven
+# Copyright 2019-2020 Jeremiah Haven
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 # files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, 
@@ -19,11 +19,8 @@
 # that is that it will update your system through a simple and easy to use interface. It only works on Debian
 # and Debian-based distros as it uses apt.
 #
-# 4.3 Updates:
-# - The --log argument also checks for the log in the Home folder, where the script
-#   backs up the log
-# - More updates for the internet check
-# - Help page
+# 5.0 Updates:
+# - --choice=2 and --choice=3 dosen't require you to confirm to install updates
 
 # Exit on any errors
 set -e
@@ -39,7 +36,7 @@ if [[ $1 == "--choice=1" ]]; then
 	exit
 fi
 if [[ $1 == "--choice=2" ]]; then
-        sudo apt-get upgrade >> /tmp/updatelog
+        sudo apt-get upgrade -y >> /tmp/updatelog
         echo " " >> /tmp/updatelog
         echo "Written :" >> /tmp/updatelog
         date >> /tmp/updatelog
@@ -48,7 +45,7 @@ if [[ $1 == "--choice=2" ]]; then
         exit
 fi
 if [[ $1 == "--choice=3" ]]; then
-        sudo apt-get dist-upgrade >> /tmp/updatelog
+        sudo apt-get dist-upgrade -y >> /tmp/updatelog
         echo "If something didn't go right, check the log at /tmp/updatelog"
         echo ""
         exit

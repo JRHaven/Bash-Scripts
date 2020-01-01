@@ -2,10 +2,17 @@
 These are my Bash Scripts that I use. Some only work with Debian and Debian based distrobutions of Linux.
 Some are half-finished. Some don't even work. I just took these strait out of my bin directory.
 
+# Update info
+With the first year of this github page being open, I decided to make a rule. I will concider updating
+scripts garunteed for 1 calender year. If afterward when I change copyright dates I don't want those
+scripts to be included, they will be removed from the release deb file and a script will run to remove
+the scripts from your system. If you wish to continue to use these scripts there will be a link provided
+to this page where you can download the files and put them in the /usr/local/bin folder.
+
 # Licensing
 All of these scripts are under the MIT License.
 
-Copyright 2019 Jeremiah Haven
+Copyright 2019-2020 Jeremiah Haven
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

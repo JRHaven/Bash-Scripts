@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/python
 
 # This script is under the MIT License.
-# Copyright 2019 Jeremiah Haven
+# Copyright 2019-2020 Jeremiah Haven
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 # files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, 
@@ -14,8 +14,47 @@
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
 # FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+# pvm is actually a python script that prints out to the screen the message "It's mv NOT vm!!!!!"!
+# I used to be in a havvit of typing vm instead of mv so I wrote this script to remind myself that it
+# is actually mv. This script will later be called on by a bash script
 
-# run the pvm script
+from time import sleep
+import os
 
-cd ~/bin
-python3 pvm
+# Function written to make code look cleaner
+def writeToScreen(message, time):
+	os.system("clear")
+	print(message)
+	sleep(time)
+	os.system("clear")
+	
+# Write the message
+writeToScreen("Test", 0.01)
+writeToScreen("m", 0.35)
+writeToScreen("\nvm", 0.3)
+writeToScreen("\n\n vm", 0.25)
+writeToScreen("\n\n\nT vm", 0.2)
+writeToScreen("\n\n\n\nOT vm", 0.15)
+writeToScreen("\n\n\n\n\nNOT vm", 0.1)
+writeToScreen("\n\n\n\n\n\n NOT vm", 0.05)
+writeToScreen("\n\n\n\n\n\n\nv NOT vm", 0.1)
+writeToScreen("\n\n\n\n\n\n\n\nmv NOT vm", 0.15)
+writeToScreen("\n\n\n\n\n\n\n\n\n mv NOT vm", 0.2)
+writeToScreen("\n\n\n\n\n\n\n\n\n\ns mv NOT vm", 0.25)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n's mv NOT vm", 0.3)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\nt's mv NOT vm", 0.35)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\nIt's mv NOT vm", 0.3)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n It's mv NOT vm!", 0.25)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n  It's mv NOT vm!!", 0.25)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n   It's mv NOT vm!!!", 0.25)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n     It's mv NOT vm!!!!", 0.25)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      It's mv NOT vm!!!!!", 0.3)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n      It's mv NOT vm!!!!!!", 0.35)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n       It's mv NOT vm!!!!!!!", 0.4)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n\n        It's mv NOT vm!!!!!!!!", 0.45)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n         It's mv NOT vm!!!!!!!!!", 0.5)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n          It's mv NOT vm!!!!!!!!!!", 0.55)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n\n           It's mv NOT vm!!!!!!!!!!!", 0.6)
+writeToScreen("\n\n\n\n\n\n\n\n\n\n\n\n            It's mv NOT vm!!!!!!!!!!!", 5)
+exit
