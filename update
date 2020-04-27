@@ -77,6 +77,35 @@ if [[ $1 == "--choice=5" ]]; then
         fi
         shutdown -r now
 fi
+# NEW as of 5.1: You can now back up the log without needing
+# to go to the Main Menu
+if [[ $1 == "--choice=9" ]]; then
+    if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+	    echo Backing up log...
+	    cd /tmp
+
+	    # Log the Log Backup in the backed up log
+	    echo "" >> ~/updatelog
+	    echo "Log Backup" >> ~/updatelog
+	    echo "" >> ~/updatelog
+
+	    # Add the contents of the origonal update to the updatelog instead of
+	    # replacing it
+	    cat updatelog >> ~/updatelog
+
+	    echo "Do you want to remove the log from the /tmp folder?"
+	    echo "Note that if it continues to be there the log will be removed. [Y,n] "
+	    read remove
+	    if [[ $remove != "n" ]]; then
+		    rm updatelog
+	    fi
+        echo Log Was Copied to Home Folder
+	    exit
+	fi
+	clear
+	echo "No log to back up!!!"
+	exit
+fi
 if [[ $1 == "shutdown" ]]; then
         if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
                 echo "Do you want to backup the update log? [y,N]"
@@ -182,8 +211,9 @@ echo "		3: Upgrade Using dist-upgrade"
 echo "		4: Use Quick Update"
 echo "		5: Reboot"
 echo "		6: Exit"
-echo "		7: View the log"
-echo "		8: Backup the log to Home folder"
+echo "		7: View Packages to be Update (Best to use option 1 before this)"
+echo "		8: View the log"
+echo "		9: Backup the log to Home folder"
 echo ""
 echo ""
 
@@ -271,8 +301,18 @@ if [[ $choice == "6" ]]; then
 	exit
 fi
 
-# Display the updatelog
+# NEW as of 5.2: View packages that need to be updated. Best to do this after
+# updating the Cache
 if [[ $choice == "7" ]]; then
+	apt list --upgradable
+	echo ""
+	echo "Press enter when done"
+	read junkdks
+	update --no-internet-check
+fi
+
+# Display the updatelog
+if [[ $choice == "8" ]]; then
 	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
 		cat /tmp/updatelog
 		echo ""
@@ -287,7 +327,7 @@ if [[ $choice == "7" ]]; then
 fi
 
 # Backup the updatelog to home folder. First check to make sure it exists
-if [[ $choice == "8" ]]; then
+if [[ $choice == "9" ]]; then
 	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
 		echo Backing up log...
 		cd /tmp

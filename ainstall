@@ -30,10 +30,9 @@
 # 
 # Just type "ainstall -ari ppa://author/repo thepackage"
 #
-# New in 5.0:
-# - You can now hold back packages
-# - Any held back packages can be un-held-back
-# - You can use a shortcut to view held back packages
+# New in 5.1:
+# - .lastcupout is stored in /tmp, instead of the folder the user is currently in.
+# - Doesn't crash if there is no bin folder in the user's home folder
 
 # Exit upon errors
 set -e
@@ -97,23 +96,25 @@ if [[ $(ls | grep echobox) == "" ]]; then
 		fi
 	fi
 fi
-cd ~/bin
-if [[ $(ls | grep update) == "" ]]; then
-        cd /usr/local/bin
-        if [[ $(ls | grep update) == "" ]]; then
-		cd /usr/bin
-		if [[ $(ls | grep update) == "" ]]; then
- 	                echo "-------------------------------------------------"
-        	        echo '| A script called "update" is not present.      |'
-                	echo "| ainstall comes with this package, so try      |"
-	                echo "| try putting update in ~/bin, /usr/local/bin,  |"
-        	        echo "| or /usr/bin. ainstall will not be able to     |"
-                	echo "| work without this package and keep throwing   |"
-	                echo "| this error until it can find update.          |"
-        	        echo "-------------------------------------------------"
-                	exit
-		fi
-        fi
+cd ~
+if [[ $(ls | grep bin) == "bin" ]]; then
+    if [[ $(ls | grep update) == "" ]]; then
+            cd /usr/local/bin
+            if [[ $(ls | grep update) == "" ]]; then
+		    cd /usr/bin
+		    if [[ $(ls | grep update) == "" ]]; then
+     	                echo "-------------------------------------------------"
+            	        echo '| A script called "update" is not present.      |'
+                    	echo "| ainstall comes with this package, so try      |"
+	                    echo "| try putting update in ~/bin, /usr/local/bin,  |"
+            	        echo "| or /usr/bin. ainstall will not be able to     |"
+                    	echo "| work without this package and keep throwing   |"
+	                    echo "| this error until it can find update.          |"
+            	        echo "-------------------------------------------------"
+                    	exit
+		    fi
+            fi
+    fi
 fi
 cd $odir
 
@@ -127,18 +128,18 @@ if [[ $1 == "-i" ]]; then
 	echo ""
 	
 	# Updates cache and puts output in a log file
-	sudo apt update > .lastcupout
+	sudo apt update > /tmp/.lastcupout
 	sudo apt-get install $2
 	echo ""
 	echo "Done"
 	
 	# Get rid of log file if requested to and if there
 	if [[ $3 == "--clean" ]]; then
-                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
                         exit
                 fi
-		rm .lastcupout
+		rm /tmp/.lastcupout
 	fi
 	exit
 fi
@@ -151,11 +152,11 @@ if [[ $1 == "-c" ]]; then
 	echo ""
         echo "Done"
         if [[ $2 == "--clean" ]]; then
-		if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+		if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
 			echobox Nothing\ to\ clean\ up\.\.\.
 			exit
 		fi
-                rm .lastcupout
+                rm /tmp/.lastcupout
         fi
         exit
 fi
@@ -172,11 +173,11 @@ if [[ $1 == "-r" ]]; then
         echo ""
         echo "Done"
         if [[ $3 == "--clean" ]]; then
-                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
                         exit
                 fi
-                rm .lastcupout
+                rm /tmp/.lastcupout
         fi
         exit
 fi
@@ -193,11 +194,11 @@ if [[ $1 == "-p" ]]; then
         echo ""
         echo "Done"
         if [[ $3 == "--clean" ]]; then
-                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
                         exit
                 fi
-                rm .lastcupout
+                rm /tmp/.lastcupout
         fi
         exit
 fi
@@ -211,15 +212,15 @@ if [[ $1 == "-ar" ]]; then
                 exit
         fi
 	sudo add-apt-repository $2
-	sudo apt-get update > .lastcupout
+	sudo apt-get update > /tmp/.lastcupout
 	echo ""
         echo "Done"
         if [[ $3 == "--clean" ]]; then
-                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
                         exit
                 fi
-                rm .lastcupout
+                rm /tmp/.lastcupout
         fi
         exit
 fi
@@ -235,7 +236,7 @@ if [[ $1 == "-ari" ]]; then
 	echo Adding Repository...
         sudo add-apt-repository $2
 	echo Updating Cache...
-	sudo apt-get update > .lastcupout
+	sudo apt-get update > /tmp/.lastcupout
 	echo Installing Software...
 	if [[ $3 == "" ]]; then
                 echobox I\ Don\'t\ know\ what\ to\ do\!\ You\ didn\'t\ give\ me\ anything\ to\ install\!
@@ -245,11 +246,11 @@ if [[ $1 == "-ari" ]]; then
         echo ""
         echo "Done"
         if [[ $4 == "--clean" ]]; then
-                if [[ $(ls -a | grep .lastcupout) == "" ]]; then
+                if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
                         echobox Nothing\ to\ clean\ up\.\.\.
                         exit
                 fi
-                rm .lastcupout
+                rm /tmp/.lastcupout
         fi
         exit
 fi
@@ -276,12 +277,12 @@ fi
 
 # Remove log file
 if [[ $1 == "--clean" ]]; then
-	if [[ $(ls -a | grep .lastcupout) == "" ]]; then
-        	echobox Nothing\ to\ clean\ up\.\.\.
-                exit
-        fi
-        rm .lastcupout
-        exit
+	if [[ $(ls /tmp -a | grep .lastcupout) == "" ]]; then
+            echobox Nothing\ to\ clean\ up\.\.\.
+            exit
+    fi
+    rm /tmp/.lastcupout
+    exit
 fi
 
 # Install a snap command
