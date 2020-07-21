@@ -19,8 +19,9 @@
 # that is that it will update your system through a simple and easy to use interface. It only works on Debian
 # and Debian-based distros as it uses apt.
 #
-# 5.0 Updates:
-# - --choice=2 and --choice=3 dosen't require you to confirm to install updates
+# 5.2 Updates:
+# - Removed Internet Check. To check for internet, run -i
+# - We now cycle through the code in a loop
 
 # Exit on any errors
 set -e
@@ -179,11 +180,11 @@ if [[ $1 == "--help" ]]; then
 	exit
 fi
 
-# Only do this if the user did NOT specify to avoid the internet checking. Otherwise ping google to try to see
-# if there is a connection to the internet. If not, stop and deliver a message.
+# Only do this if the user did specify to do an internet check.
 # NEW in 4.1: Improved interface
 # NEW in 4.3: Notifying the user of the internet check
-if [[ ! $1 == "--no-internet-check" ]]; then
+# NEW in 5.2: Only do an internet check if told to do so
+if [[ $1 == "-internet" ]]; then
 	echo "Checking for an internet connection..."
 	echo "You can buypass this check with the '--no-internet-check' argument"
 	ping www.google.com -c 3 | grep packet
@@ -199,166 +200,169 @@ if [[ ! $1 == "--no-internet-check" ]]; then
 	fi
 fi
 
-clear
-
-# Main Menu-type interface setup
-echo What do you want to do?
-echo ""
-echo ""
-echo "		1: Update Cache"
-echo "		2: Upgrade System"
-echo "		3: Upgrade Using dist-upgrade"
-echo "		4: Use Quick Update"
-echo "		5: Reboot"
-echo "		6: Exit"
-echo "		7: View Packages to be Update (Best to use option 1 before this)"
-echo "		8: View the log"
-echo "		9: Backup the log to Home folder"
-echo ""
-echo ""
-
-# Get the choice the user made and put it into a variable then clear the screen
-read choice
-clear
-
-# Start updating apt's repo list. Put all the output in a log located at /tmp/updatelog. Tell the user that
-# there is a log in the /tmp directory
-if [[ $choice == "1" ]]; then
-	sudo apt-get update >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-        echo "Written :" >> /tmp/updatelog
-        date >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-	echo "If something didn't go right, check the log at /tmp/updatelog"
+# Run this in a loop:
+while [[ true ]]
+do
+	# Main Menu-type interface setup
+	echo What do you want to do?
 	echo ""
+	echo ""
+	echo "		1: Update Cache"
+	echo "		2: Upgrade System"
+	echo "		3: Upgrade Using dist-upgrade"
+	echo "		4: Use Quick Update"
+	echo "		5: Reboot"
+	echo "		6: Exit"
+	echo "		7: View Packages to be Update (Best to use option 1 before this)"
+	echo "		8: View the log"
+	echo "		9: Backup the log to Home folder"
+	echo ""
+	echo ""
+	
+	# Get the choice the user made and put it into a variable then clear the screen
+	read choice
 	clear
-
-	# Run the script again
-	update --no-internet-check
-fi
-
-# Do a system update. All output goes to /tmp/updatelog.
-if [[ $choice == "2" ]]; then
-	sudo apt-get upgrade -y >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-        echo "Written :" >> /tmp/updatelog
-        date >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-	echo "If something didn't go right, check the log at /tmp/updatelog"
-	echo ""
-	clear
-	update --no-internet-check
-fi
-
-# Do a system update using dist-upgrade. All output goes to /tmp/updatelog.
-if [[ $choice == "3" ]]; then
-	sudo apt-get dist-upgrade -y >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-        echo "Written :" >> /tmp/updatelog
-        date >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-	echo "If something didn't go right, check the log at /tmp/updatelog"
-	echo ""
-	update --no-internet-check
-fi
-
-# String together numbers 1 and 2. All output goes to /tmp/updatelog.
-if [[ $choice == "4" ]]; then
-	echo "Running apt-get update..."
-	sudo apt-get update >> /tmp/updatelog
-	echo "Running apt-get upgrade..."
-	sudo apt-get upgrade -y >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-        echo "Written :" >> /tmp/updatelog
-        date >> /tmp/updatelog
-        echo " " >> /tmp/updatelog
-	clear
-	echo "If something didn't go right, check the log at /tmp/updatelog"
-	echo ""
-	update --no-internet-check
-fi
-
-# Restart the system after checking to backup the updatelog to home folder
-if [[ $choice == "5" ]]; then
-	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
-		echo "Do you want to backup the update log? [y,N]"
-		read backup
-	fi
-	echo "Press Enter When You Have Saved Work and Closed any Open Applications..."
-	read junk
-	if [[ $backup == "y" ]]; then
-		cp /tmp/updatelog ~/updatelog
-	fi
-	if [[ $backup == "Y" ]]; then
-                cp /tmp/updatelog ~/updatelog
-        fi
-	shutdown -r now
-fi
-
-# Exit the script
-if [[ $choice == "6" ]]; then
-	clear
-	exit
-fi
-
-# NEW as of 5.2: View packages that need to be updated. Best to do this after
-# updating the Cache
-if [[ $choice == "7" ]]; then
-	apt list --upgradable
-	echo ""
-	echo "Press enter when done"
-	read junkdks
-	update --no-internet-check
-fi
-
-# Display the updatelog
-if [[ $choice == "8" ]]; then
-	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
-		cat /tmp/updatelog
+	
+	# Start updating apt's repo list. Put all the output in a log located at /tmp/updatelog. Tell the user that
+	# there is a log in the /tmp directory
+	if [[ $choice == "1" ]]; then
+		# NEW in 5.2: Display a message to run a new instance with --log to
+		# see command output
+		echo "Currently updating cache. To see output of command,"
+		echo "run a new instance of update using the --log argument."
+		sudo apt-get update >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+	        echo "Written :" >> /tmp/updatelog
+	        date >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+		echo "If something didn't go right, check the log at /tmp/updatelog"
 		echo ""
-		echo " Press enter when finished."
-		read junk
 		clear
-		update --no-internet-check
-		exit
 	fi
-	echo "Could not find the update log"
-	update --no-internet-check
-fi
+	
+	# Do a system update. All output goes to /tmp/updatelog.
+	if [[ $choice == "2" ]]; then
+                echo "Currently updating non-core components of your system. To see"
+                echo "output of command, run a new instance of update using the --log"
+		echo "argument."
+		sudo apt-get upgrade -y >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+	        echo "Written :" >> /tmp/updatelog
+	        date >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+		echo "If something didn't go right, check the log at /tmp/updatelog"
+		echo ""
+		clear
+	fi
 
-# Backup the updatelog to home folder. First check to make sure it exists
-if [[ $choice == "9" ]]; then
-	if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
-		echo Backing up log...
-		cd /tmp
+	# Do a system update using dist-upgrade. All output goes to /tmp/updatelog.
+	if [[ $choice == "3" ]]; then
+                echo "Currently updating non-core + core components of your system. To see"
+                echo "output of command, run a new instance of update using the --log"
+                echo "argument."
+		sudo apt-get dist-upgrade -y >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+	        echo "Written :" >> /tmp/updatelog
+	        date >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+		echo "If something didn't go right, check the log at /tmp/updatelog"
+		echo ""
+	fi
 
-		# Log the Log Backup in the backed up log
-		echo "" >> ~/updatelog
-		echo "Log Backup" >> ~/updatelog
-		echo "" >> ~/updatelog
+	# String together numbers 1 and 2. All output goes to /tmp/updatelog.
+	if [[ $choice == "4" ]]; then
+		echo "Running apt-get update... (use --log to see output)"
+		sudo apt-get update >> /tmp/updatelog
+		echo "Running apt-get upgrade..."
+		sudo apt-get upgrade -y >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+	        echo "Written :" >> /tmp/updatelog
+	        date >> /tmp/updatelog
+	        echo " " >> /tmp/updatelog
+		clear
+		echo "If something didn't go right, check the log at /tmp/updatelog"
+		echo ""
+	fi
 
-		# Add the contents of the origonal update to the updatelgo instead of
-		# replacing it
-		cat updatelog >> ~/updatelog
-
-		# NEW as of 4.1: Remove origonal updatelog so that it dosen't backup the same
-		# thing to the backup log
-		#
-		# NEW as of 4.3: Give the option to remove from /tmp folder. It does not currently work.
-		echo "Do you want to remove the log from the /tmp folder?"
-		echo "Note that if it continues to be there the log will be removed. [Y,n] "
-		read remove
-		if [[ $remove != "n" ]]; then
-			rm updatelog
+	# Restart the system after checking to backup the updatelog to home folder
+	if [[ $choice == "5" ]]; then
+		if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+			echo "Do you want to backup the update log? [y,N]"
+			read backup
 		fi
+		echo "Press Enter When You Have Saved Work and Closed any Open Applications..."
+		read junk
+		if [[ $backup == "y" ]]; then
+			cp /tmp/updatelog ~/updatelog
+		fi
+		if [[ $backup == "Y" ]]; then
+	                cp /tmp/updatelog ~/updatelog
+        	fi
+		shutdown -r now
+	fi
 
+	# Exit the script
+	if [[ $choice == "6" ]]; then
 		clear
-                echo Log Was Copied to Home Folder
-		update --no-internet-check
 		exit
 	fi
-	clear
-	echo "No log to back up!!!"
-	update --no-internet-check
-	exit
-fi
+
+	# NEW as of 5.2: View packages that need to be updated. Best to do this after
+	# updating the Cache
+	if [[ $choice == "7" ]]; then
+		apt list --upgradable
+		echo ""
+		echo "Press enter when done"
+		read junkdks
+		update --no-internet-check
+	fi
+
+	# Display the updatelog
+	if [[ $choice == "8" ]]; then
+		if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+			cat /tmp/updatelog
+			echo ""
+			echo " Press enter when finished."
+			read junk
+			clear
+			update --no-internet-check
+			exit
+		fi
+		echo "Could not find the update log"
+		update --no-internet-check
+	fi
+
+	# Backup the updatelog to home folder. First check to make sure it exists
+	if [[ $choice == "9" ]]; then
+		if [[ ! $(ls /tmp | grep updatelog) == "" ]]; then
+			echo Backing up log...
+			cd /tmp
+
+			# Log the Log Backup in the backed up log
+			echo "" >> ~/updatelog
+			echo "Log Backup" >> ~/updatelog
+			echo "" >> ~/updatelog
+
+			# Add the contents of the origonal update to the updatelgo instead of
+			# replacing it
+			cat updatelog >> ~/updatelog
+
+			# NEW as of 4.1: Remove origonal updatelog so that it dosen't backup the same
+			# thing to the backup log
+			#
+			# NEW as of 4.3: Give the option to remove from /tmp folder. It does not currently work.
+			echo "Do you want to remove the log from the /tmp folder?"
+			echo "Note that if it continues to be there the log will be removed. [Y,n] "
+			read remove
+			if [[ $remove != "n" ]]; then
+				rm updatelog
+			fi
+
+			clear
+                	echo Log Was Copied to Home Folder
+		fi
+		clear
+		echo "No log to back up!!!"
+		exit
+	fi
+done
