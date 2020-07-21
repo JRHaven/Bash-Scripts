@@ -11,7 +11,7 @@ to this page where you can download the files and put them in the /usr/local/bin
 
 ## What's New?
 In version 5.1, we have updates to the Update and Ainstall scripts. Update will now give you the option to
-backup the updatelog right from the command line by using the 'update --choice=8' command.
+backup the updatelog right from the command line by using the `update --choice=8` command.
 Ainstall will now always store .lastcupout in the /tmp directory so that it will always
 be deleted on reboot.
 
