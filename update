@@ -171,10 +171,9 @@ if [[ $1 == "--help" ]]; then
         echo "|         output of the commands, this is  |"
         echo "|         the way to do it.                |"
         echo "|                                          |"
-        echo "| --no-internet-check - Bypass the         |"
-        echo "|                       internet check and |"
-        echo "|                       skip strait to the |"
-        echo "|                       menu.              |"
+        echo "| -i - Check to make sure you are          |"
+        echo "|      connected to the internet           |"
+	echo "|                                          |"
         echo "| --help - Show this help screen           |"
         echo "+------------------------------------------+"
 	exit
