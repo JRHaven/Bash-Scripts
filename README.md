@@ -10,11 +10,11 @@ the scripts from your system. If you wish to continue to use these scripts there
 to this page where you can download the files and put them in the /usr/local/bin folder.
 
 ## What's New?
-In version 5.1, we have updates to the Update and Ainstall scripts. Update will now give you the option to
-backup the updatelog right from the command line by using the `update --choice=8` command.
-Ainstall will now always store .lastcupout in the /tmp directory so that it will always
-be deleted on reboot.
-
+In version 5.2, we have updates to the Update script. Update will now only perform an internet
+check if told to do so. We also have a more efficiant way of looping by using an infinate
+loop instead of calling ourselves to run again. The user will also get a message informing
+them that they can use `update --log` to view repeated output of the log, and thus the
+commands we are running.
 
 # Licensing
 All of these scripts are under the MIT License.
