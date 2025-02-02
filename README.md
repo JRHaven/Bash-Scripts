@@ -2,20 +2,6 @@
 These are my Bash Scripts that I use. Some only work with Debian and Debian based distrobutions of Linux.
 Some are half-finished. Some don't even work. I just took these strait out of my bin directory.
 
-## Update info
-With the first year of this github page being open, I decided to make a rule. I will concider updating
-scripts garunteed for 1 calender year. If afterward when I change copyright dates I don't want those
-scripts to be included, they will be removed from the release deb file and a script will run to remove
-the scripts from your system. If you wish to continue to use these scripts there will be a link provided
-to this page where you can download the files and put them in the /usr/local/bin folder.
-
-## What's New?
-In version 5.2, we have updates to the Update script. Update will now only perform an internet
-check if told to do so. We also have a more efficiant way of looping by using an infinate
-loop instead of calling ourselves to run again. The user will also get a message informing
-them that they can use `update --log` to view repeated output of the log, and thus the
-commands we are running.
-
 # Licensing
 All of these scripts are under the MIT License.
 
